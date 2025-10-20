@@ -1,15 +1,16 @@
 # Render Blueprint for ChefCode
 # This file enables one-click deployment to Render
+# The backend serves both API and frontend static files
 
 services:
-  # Backend API Service
+  # Combined Backend + Frontend Service
   - type: web
-    name: chefcode-backend
+    name: chefcode
     runtime: python
     region: oregon
     plan: free
-    buildCommand: pip install -r Backend/requirements.txt
-    startCommand: cd Backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    buildCommand: cd Backend && pip install -r requirements.txt
+    startCommand: cd Backend && uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1 --timeout-keep-alive 30
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -17,29 +18,26 @@ services:
         fromDatabase:
           name: chefcode-db
           property: connectionString
+      - key: API_KEY
+        value: chefcode-secret-key-2024
       - key: OPENAI_API_KEY
         sync: false
       - key: ENVIRONMENT
         value: production
       - key: ALLOWED_ORIGINS
         value: "*"
+      # OCR Configuration (Google Cloud + Gemini)
+      - key: PROJECT_ID
+        sync: false
+      - key: LOCATION
+        sync: false
+      - key: PROCESSOR_ID
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        sync: false
     healthCheckPath: /health
-
-  # Frontend Static Site
-  - type: static
-    name: chefcode-frontend
-    buildCommand: echo "No build needed"
-    staticPublishPath: ./frontend/mobile/assets
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: API_URL
-        fromService:
-          type: web
-          name: chefcode-backend
-          envVarKey: RENDER_EXTERNAL_URL
 
 databases:
   # PostgreSQL Database
