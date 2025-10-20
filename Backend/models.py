@@ -13,7 +13,7 @@ class InventoryItem(Base):
     category = Column(String, default="Other")
     price = Column(Float, default=0.0)
     # HACCP Traceability fields
-    lot_number = Column(String, nullable=True)  # Batch/Lot number for traceability
+    batch_number = Column(String, nullable=True)  # Batch number for traceability
     expiry_date = Column(Date, nullable=True)  # Expiry date for HACCP compliance
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

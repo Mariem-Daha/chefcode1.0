@@ -6,7 +6,7 @@
 
 **AI-Powered Restaurant Inventory & Recipe Management with Voice Recognition**
 
-[![Open in Hugging Face Spaces](https://img.shields.io/badge/🤗%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces)
+[![Deploy on Railway](https://img.shields.io/badge/🚂%20Deploy%20on-Railway-purple?style=for-the-badge)](https://railway.app)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat&logo=openai&logoColor=white)](https://openai.com/)
 
@@ -164,15 +164,17 @@ Go to **Recipes** → **"Search Recipe from Web"** and search for:
 ## 🚨 **Important Notes**
 
 ### **⚠️ Limitations**
-- **Ephemeral Storage** - Data may be lost on Hugging Face Spaces restart
-- **Resource Limits** - Free tier has CPU/memory constraints
+- **Free Tier** - Railway provides $5 monthly credit (enough for 24/7 uptime)
 - **AI Costs** - OpenAI API calls count against your quota
-- **Concurrent Users** - Limited by free tier resources
+- **Database** - PostgreSQL database included with Railway deployment
 
-### **💡 Recommendations**
-- **For Production** - Consider Railway, Render, or Heroku for persistent storage
-- **For Demo** - Hugging Face Spaces is perfect for showcasing features
-- **For Development** - Local deployment recommended for testing
+### **💡 Deployment Options**
+- **Railway (Recommended)** - One-click deploy, free tier, persistent PostgreSQL database
+- **Local Development** - Run locally with SQLite for testing
+- **Self-Hosted** - Deploy on your own infrastructure using Docker
+
+### **📖 Deployment Guide**
+See [DEPLOY_RAILWAY_NOW.md](DEPLOY_RAILWAY_NOW.md) for step-by-step deployment instructions.
 
 ---
 

@@ -16,7 +16,7 @@ The app works perfectly without OCR - users can still add inventory manually or 
   - Item names and descriptions
   - Quantities and units
   - Prices
-  - Lot numbers
+  - Batch numbers
   - Expiry dates
   - Supplier information
 
@@ -85,14 +85,14 @@ Since OCR requires paid services, ChefCode provides excellent alternatives:
 
 ### 1. **AI Voice Commands** ✅ (Already Working!)
 ```
-"Add 10 kg of tomatoes at 3 euros per kilo, lot number LOT123, expires December 25"
+"Add 10 kg of tomatoes at 3 euros per kilo, batch number BATCH123, expires December 25"
 ```
 The AI automatically extracts:
 - Item name: tomatoes
 - Quantity: 10
 - Unit: kg
 - Price: 3 €/kg
-- Lot number: LOT123
+- Batch number: BATCH123
 - Expiry date: 2024-12-25
 
 ### 2. **Manual Form Entry** ✅ (Always Available)

@@ -24,7 +24,7 @@ client = openai.OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 SYSTEM_PROMPTS = {
     "en": """You are ChefCode's AI Inventory Parser. Parse commands silently and return only JSON.
 
-Extract: item_name, unit, quantity, unit_price, type, lot_number (optional), expiry_date (optional)
+Extract: item_name, unit, quantity, unit_price, type, batch_number (optional), expiry_date (optional)
 
 Type detection:
 beef/chicken/pork/meat → meat
@@ -35,18 +35,18 @@ water/juice/wine/soda/beverage → beverage
 sugar/flour/pasta/rice/bread → grocery
 soap/detergent/cleaner → cleaning
 
-Lot number keywords: "lot", "batch", "lot number", "batch number", "LOT"
+Batch number keywords: "batch", "batch number", "lot"
 Expiry date keywords: "expires", "expiry", "best before", "use by", "exp date", "expiration"
 Date formats: Parse dates flexibly (e.g., "Dec 25", "12/25/2024", "2024-12-25", "December 25 2024")
 
 If price missing: {"status": "ask_price", "message": "Price?"}
-If complete: {"status": "complete", "parsed_data": {"item_name": "...", "unit": "...", "quantity": ..., "unit_price": ..., "type": "...", "lot_number": "..." or null, "expiry_date": "YYYY-MM-DD" or null}}
+If complete: {"status": "complete", "parsed_data": {"item_name": "...", "unit": "...", "quantity": ..., "unit_price": ..., "type": "...", "batch_number": "..." or null, "expiry_date": "YYYY-MM-DD" or null}}
 
 Output ONLY valid JSON. No explanations.""",
     
     "it": """Sei l'AI parser di ChefCode. Analizza comandi in silenzio e restituisci solo JSON.
 
-Estrai: item_name, unit, quantity, unit_price, type, lot_number (opzionale), expiry_date (opzionale)
+Estrai: item_name, unit, quantity, unit_price, type, batch_number (opzionale), expiry_date (opzionale)
 
 Rilevamento tipo:
 manzo/pollo/maiale/carne → meat
@@ -57,12 +57,12 @@ acqua/succo/vino/bevanda → beverage
 zucchero/farina/pasta/riso/pane → grocery
 sapone/detergente → cleaning
 
-Parole chiave lotto: "lotto", "batch", "numero lotto", "lotto numero"
+Parole chiave lotto: "batch", "numero batch", "lotto"
 Parole chiave scadenza: "scadenza", "scade", "da consumarsi entro", "exp", "data scadenza"
 Formati data: Analizza date flessibilmente (es. "25 dic", "25/12/2024", "2024-12-25", "25 dicembre 2024")
 
 Se manca prezzo: {"status": "ask_price", "message": "Prezzo?"}
-Se completo: {"status": "complete", "parsed_data": {"item_name": "...", "unit": "...", "quantity": ..., "unit_price": ..., "type": "...", "lot_number": "..." o null, "expiry_date": "YYYY-MM-DD" o null}}
+Se completo: {"status": "complete", "parsed_data": {"item_name": "...", "unit": "...", "quantity": ..., "unit_price": ..., "type": "...", "batch_number": "..." o null, "expiry_date": "YYYY-MM-DD" o null}}
 
 Output SOLO JSON valido. Niente spiegazioni."""
 }

@@ -33,15 +33,15 @@ function convertFactor(from, to) {
 }
 
 // Global function for adding/merging inventory items
-window.addOrMergeInventoryItem = function({ name, unit, quantity, category, price, lot_number, expiry_date }) {
+window.addOrMergeInventoryItem = function({ name, unit, quantity, category, price, batch_number, expiry_date }) {
   const nName = normName(name);
   const pCents = Math.round((Number(price) || 0) * 100);
 
-  // HACCP: Items with different lot numbers or expiry dates MUST be kept separate for traceability
+  // HACCP: Items with different batch numbers or expiry dates MUST be kept separate for traceability
   const idx = window.STATE.inventory.findIndex(it =>
     normName(it.name) === nName &&
     Math.round((Number(it.price) || 0) * 100) === pCents &&
-    (it.lot_number || '') === (lot_number || '') &&
+    (it.batch_number || '') === (batch_number || '') &&
     (it.expiry_date || '') === (expiry_date || '')
   );
 
@@ -53,14 +53,14 @@ window.addOrMergeInventoryItem = function({ name, unit, quantity, category, pric
 
     if (f === null) {
       // unità non compatibili: NON fondere, crea una nuova riga
-      window.STATE.inventory.push({ name, unit, quantity, category: category || row.category || 'Other', price, lot_number, expiry_date });
+      window.STATE.inventory.push({ name, unit, quantity, category: category || row.category || 'Other', price, batch_number, expiry_date });
     } else {
       row.quantity = (Number(row.quantity) || 0) + (Number(quantity) || 0) * f;
       // manteniamo categoria e unit della riga esistente
     }
   } else {
     // nuova riga con HACCP traceability
-    window.STATE.inventory.push({ name, unit, quantity, category, price, lot_number, expiry_date });
+    window.STATE.inventory.push({ name, unit, quantity, category, price, batch_number, expiry_date });
   }
 };
 
@@ -557,14 +557,14 @@ window.taskIdCounter   = typeof window.taskIdCounter === 'number' ? window.taskI
                 quantity: item.quantity,
                 category: item.category || 'Other',
                 price: item.price,
-                lot_number: item.lot_number || '',
+                batch_number: item.batch_number || '',
                 expiry_date: item.expiry_date || ''
               });
               added.push(`${item.name} (${item.quantity} ${item.unit} @ €${item.price})`);
             });
             updateInventoryToBackend();
             renderInventory();
-            cameraOutput.innerHTML = `<div class="ocr-result"><h4>OCR Extraction Result</h4><ul>${added.map(x => `<li>${x}</li>`).join('')}</ul><p style="color:#888; margin-top:10px;">💡 Tip: Add lot numbers and expiry dates via Manual Input for HACCP compliance</p></div>`;
+            cameraOutput.innerHTML = `<div class="ocr-result"><h4>OCR Extraction Result</h4><ul>${added.map(x => `<li>${x}</li>`).join('')}</ul><p style="color:#888; margin-top:10px;">💡 Tip: Add batch numbers and expiry dates via Manual Input for HACCP compliance</p></div>`;
           } else {
             cameraOutput.innerHTML = `<div class="ocr-result"><h4>OCR failed</h4><div>${data.message || 'Could not extract items.'}</div></div>`;
           }
@@ -685,7 +685,7 @@ window.taskIdCounter   = typeof window.taskIdCounter === 'number' ? window.taskI
         <td>${window.escapeHtml(item.unit || '-')}</td>
         <td>${item.quantity ?? 0}</td>
         <td>${window.escapeHtml(item.category || '-')}</td>
-        <td>${window.escapeHtml(item.lot_number || '-')}</td>
+        <td>${window.escapeHtml(item.batch_number || '-')}</td>
         <td>${expiryHTML}</td>
         <td>€${rowTotal.toFixed(2)}</td>
         <td><button class="delete-btn" onclick="deleteInventoryItem(${item.id})" title="Delete item"><i class="fas fa-trash"></i></button></td>`;
@@ -709,7 +709,7 @@ window.taskIdCounter   = typeof window.taskIdCounter === 'number' ? window.taskI
       const unit = el('item-unit')?.value || 'pz';
       const price= parseFloat(el('item-price')?.value || '0');
       const cat  = el('item-category')?.value || 'Other';
-      const lotNumber = el('item-lot-number')?.value || '';
+      const batchNumber = el('item-batch-number')?.value || '';
       const expiryDate = el('item-expiry-date')?.value || '';
       if (!name || isNaN(qty) || isNaN(price)){ alert('Inserisci nome, quantità e prezzo validi.'); return; }
       // Validate expiry date is not in the past (if provided)
@@ -728,7 +728,7 @@ window.taskIdCounter   = typeof window.taskIdCounter === 'number' ? window.taskI
         quantity: qty, 
         category: cat, 
         price,
-        lot_number: lotNumber,
+        batch_number: batchNumber,
         expiry_date: expiryDate
       });
       renderInventory(); // Update display immediately
@@ -1729,7 +1729,7 @@ try {
               </select>
             </td>
             <td><input type="number" class="ocr-edit-input ocr-number-input" data-field="price" value="${item.price || 0}" step="0.01" /></td>
-            <td><input type="text" class="ocr-edit-input" data-field="lot_number" value="${window.escapeHtml(item.lot_number || '')}" placeholder="Enter lot #" /></td>
+            <td><input type="text" class="ocr-edit-input" data-field="batch_number" value="${window.escapeHtml(item.batch_number || '')}" placeholder="Enter batch #" /></td>
             <td><input type="date" class="ocr-edit-input ocr-date-input" data-field="expiry_date" value="${item.expiry_date || ''}" placeholder="YYYY-MM-DD" /></td>
           `;
           tbody.appendChild(row);
@@ -1773,7 +1773,7 @@ try {
             quantity: item.quantity,
             category: item.category || 'Other',
             price: item.price,
-            lot_number: item.lot_number || '',
+            batch_number: item.batch_number || '',
             expiry_date: item.expiry_date || ''
           });
           addedCount++;
