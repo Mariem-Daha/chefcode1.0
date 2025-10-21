@@ -23,4 +23,15 @@ __all__ = ['app']
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    
+    print(f"🚀 Starting ChefCode Backend on port {port}")
+    print(f"📁 Backend directory: {backend_dir}")
+    print(f"📁 Current directory: {os.getcwd()}")
+    
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=port,
+        log_level="info",
+        access_log=True
+    )

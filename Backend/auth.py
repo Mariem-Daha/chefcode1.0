@@ -10,11 +10,20 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
 # Ensure API key is configured
+# For Railway deployment, generate a default key if not provided (for quick deployment)
 if not API_KEY:
-    raise RuntimeError(
-        "API_KEY environment variable is not set. "
-        "Please create a .env file with API_KEY=your-secret-key"
+    import secrets
+    import warnings
+    # Generate a secure random key for this session
+    API_KEY = secrets.token_urlsafe(32)
+    warnings.warn(
+        "⚠️ API_KEY environment variable is not set. "
+        "A temporary key has been generated for this session. "
+        "For production, please set API_KEY in Railway environment variables.",
+        RuntimeWarning
     )
+    print(f"⚠️ Generated temporary API_KEY: {API_KEY}")
+    print("⚠️ Add this to Railway environment variables: API_KEY=<your-secure-key>")
 
 async def verify_api_key(x_api_key: Optional[str] = Header(None, description="API Key for authentication")):
     """

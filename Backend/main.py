@@ -97,9 +97,8 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 # Health check endpoint (must be before static files)
 @app.get("/health")
-async def health_check():
-    logger.debug("Health check called")
-    return {"status": "healthy", "service": "ChefCode Backend"}
+def health():
+    return {"status": "ok"}
 
 # Check if frontend directory exists (for production deployment)
 frontend_path = Path(__file__).parent.parent / "frontend" / "mobile" / "assets"
@@ -133,17 +132,5 @@ else:
         return {"message": "ChefCode FastAPI Backend", "version": "1.0.0", "docs": "/docs"}
 
 if __name__ == "__main__":
-    # Use reload=True only in development
-    # For production, use: uvicorn main:app --host 0.0.0.0 --port $PORT
-    is_dev = os.getenv("ENVIRONMENT", "development") == "development"
-    port = int(os.getenv("PORT", 8000))
-    
-    print(f"🚀 Starting ChefCode on port {port} (Environment: {os.getenv('ENVIRONMENT', 'development')})")
-    
-    uvicorn.run(
-        "main:app", 
-        host="0.0.0.0", 
-        port=port, 
-        reload=is_dev,
-        log_level="info"
-    )
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("Backend.main:app", host="0.0.0.0", port=port)
