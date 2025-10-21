@@ -1,8 +1,11 @@
+[variables]
+PYTHONPATH = "/app"
+
 [phases.setup]
-nixPkgs = ["python311", "bash"]
+nixPkgs = ["python311"]
 
 [phases.install]
-cmds = ["pip install -r Backend/requirements.txt", "chmod +x start.sh"]
+cmds = ["pip install -r Backend/requirements.txt"]
 
 [start]
-cmd = "./start.sh"
+cmd = "sh -c 'cd Backend && exec python -m uvicorn main:app --host 0.0.0.0 --port $PORT'"
