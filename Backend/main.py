@@ -18,11 +18,11 @@ logger = logging.getLogger(__name__)
 
 try:
     logger.info("Importing database and models...")
-    from Backend.database import SessionLocal, engine
-    from Backend import models
+    from database import SessionLocal, engine
+    import models
     
     logger.info("Importing routes...")
-    from Backend.routes import inventory, recipes, tasks, data, actions, ocr, web_recipes, ai_assistant
+    from routes import inventory, recipes, tasks, data, actions, ocr, web_recipes, ai_assistant
     
     logger.info("Creating database tables...")
     models.Base.metadata.create_all(bind=engine)
