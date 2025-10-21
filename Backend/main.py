@@ -18,11 +18,11 @@ logger = logging.getLogger(__name__)
 
 try:
     logger.info("Importing database and models...")
-    from database import SessionLocal, engine
-    import models
+    from Backend.database import SessionLocal, engine
+    from Backend import models
     
     logger.info("Importing routes...")
-    from routes import inventory, recipes, tasks, data, actions, ocr, web_recipes, ai_assistant
+    from Backend.routes import inventory, recipes, tasks, data, actions, ocr, web_recipes, ai_assistant
     
     logger.info("Creating database tables...")
     models.Base.metadata.create_all(bind=engine)
@@ -133,4 +133,4 @@ else:
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("Backend.main:app", host="0.0.0.0", port=port)
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
