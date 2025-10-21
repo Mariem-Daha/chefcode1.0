@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Node modules (if any)
+node_modules/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+*.bat
+*.sh
+
+# Deployment files
+deploy*.bat
+push-to-new-repo.bat
+UPDATE_BACKEND_URL.bat
+
+# Frontend build (if not needed)
+frontend/mobile/node_modules/
+frontend/mobile/android/build/
+frontend/mobile/android/.gradle/
+frontend/mobile/dist/
+
+# Large unnecessary files
+*.zip
+

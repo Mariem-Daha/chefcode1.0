@@ -4,36 +4,19 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+# Copy Backend requirements and install dependencies
+COPY Backend/requirements.txt /app/Backend/requirements.txt
+RUN pip install --no-cache-dir -r Backend/requirements.txt
 
-# Copy requirements first for better caching
-COPY Backend/requirements.txt .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy backend code
-COPY Backend/ ./backend/
-
-# Copy frontend assets
-COPY frontend/mobile/assets/ ./frontend/
-
-# Create a simple HTTP server for frontend
-RUN pip install aiofiles
-
-# Create a combined FastAPI app that serves both API and frontend
-COPY app.py .
-
-# Expose port (Hugging Face Spaces will set PORT environment variable)
-EXPOSE 7860
+# Copy the entire project
+COPY . /app
 
 # Set environment variables
-ENV PYTHONPATH=/app
-ENV DATABASE_URL=sqlite:///./chefcode.db
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
 
-# Run the application
-CMD ["python", "app.py"]
+# Expose port
+EXPOSE 8080
+
+# Change to Backend directory and run the app
+CMD cd Backend && uvicorn main:app --host 0.0.0.0 --port ${PORT}
