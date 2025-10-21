@@ -6,15 +6,12 @@ import sys
 import os
 from pathlib import Path
 
-# Add Backend directory to Python path
-backend_dir = Path(__file__).parent / "Backend"
-sys.path.insert(0, str(backend_dir))
+# Add project root to Python path
+project_root = Path(__file__).parent
+sys.path.insert(0, str(project_root))
 
-# Change to Backend directory so relative imports work
-os.chdir(backend_dir)
-
-# Import the FastAPI app
-from main import app
+# Import the FastAPI app using absolute imports
+from Backend.main import app
 
 # This is what uvicorn will use
 __all__ = ['app']
@@ -25,7 +22,7 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     
     print(f"🚀 Starting ChefCode Backend on port {port}")
-    print(f"📁 Backend directory: {backend_dir}")
+    print(f"📁 Project root: {project_root}")
     print(f"📁 Current directory: {os.getcwd()}")
     
     uvicorn.run(
